@@ -1,0 +1,88 @@
+/* 
+--------
+-----------------------------
+GENERAL ********************
+-----------------------------
+-------
+*/
+
+
+body {
+    min-height: 75rem;
+    padding-top: 4.5rem;
+    background-color: #D3D3D3;
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+.adminbg {
+    background-color: #708090;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Pattaya', sans-serif;
+}
+
+/* 
+-------
+-------------------------
+COULEURS ****************
+-------------------------
+-------
+*/
+
+
+.seaGreen {
+    color : #20B2AA;
+}
+
+.bg-seaGreen {
+    background-color: #20B2AA;
+} 
+
+
+.grayS {
+    color : #708090!important;
+} 
+
+.bg-grayS {
+    background-color: #708090;
+}
+
+/* 
+-------
+-------------------------
+TEXTE ****************
+-------------------------
+-------
+*/
+input {
+    caret-color :  #20B2AA;
+}
+
+.logo {
+    text-shadow:   -1px -1px 0 white,  
+    1px -1px 0 white,
+    -1px 1px 0 white,
+     1px 1px 0 white,
+     1px 1px 2px white,
+     1px 1px 3px white,
+     1px 1px 5px white,
+     1px 1px 7px white,
+     1px 1px 10px white,
+     1px 1px 12px white,
+     1px 1px 18px white;
+
+ 
+
+}
+
+/* PAGE PROFIL */
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block!important;
+}

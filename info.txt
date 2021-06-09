@@ -1,0 +1,15 @@
+INFORMATION DE CONNEXION :
+
+- ADMINISTRATEUR :
+    statut : 2
+    pseudo : creaswap
+    mdp : creaswap
+
+- MEMBRE :
+    statut : 1
+    pseudo : swapeur
+    mdp : swapeur
+
+
+
+    autre compte : sergio sergio
