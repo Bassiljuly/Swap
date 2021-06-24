@@ -26,7 +26,7 @@ h1, h2, h3, h4, h5 {
 /* 
 -------
 -------------------------
-COULEURS ****************
+COULEURS  ET CLASSES ****************
 -------------------------
 -------
 */
@@ -47,6 +47,23 @@ COULEURS ****************
 
 .bg-grayS {
     background-color: #708090;
+}
+
+.border-seaGreen {
+    border: 2px solid #20B2AA!important;
+}
+
+.border-grayS {
+    border: 2px solid #708090!important;
+}
+
+h2.afterh2::after {
+   display: inline-block;
+    content: " ";
+    height: 2px;
+    width: 70%;
+    background-color: #708090;
+    margin-left : 10px;
 }
 
 /* 
@@ -86,3 +103,16 @@ input {
 .show {
     display: block!important;
 }
+
+
+/* IMAGE*/
+
+
+.height_img {
+    height: 150px;
+}
+
+.max_height_100 {
+    height:100px;
+}
+

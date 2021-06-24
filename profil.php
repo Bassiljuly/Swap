@@ -34,26 +34,7 @@ $tel ='';
 
         
     }
-    // if( isset($_GET['action']) && $_GET['action'] == 'supprimer' && !empty($_SESSION['membre']['id_membre']) ) {
-    //     // si l'indice action existe dans $_GET && si sa valeur est égale à 'supprimer' && si id_article existe et n'est pas vide dans $_GET
-    //     // Requete delete basée sur l'id_article pour supprimer l'article en question.
-    //     $suppression = $pdo->prepare("DELETE FROM membre WHERE id_membre = :id_membre");
-    //     $suppression->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
-    //     $suppression->execute();
 
-    //     session_destroy();
-    //     echo "<script type='text/javascript'>alert('Vos informations on bien été effacées. Vous allez être redirigé vers la page d'inscription');document.location.href = 'inscription.php';
-    // </script>";
-
-    //    echo  "<script type='text/javascript'> if ( confirm( 'Etes vous sure' ) ) {
-    //        ". session_destroy();
-    //        header('location:inscription.php');."
-    //     } else {".
-    //         // Code à éxécuter si l'utilisateur clique sur "Annuler" 
-    //         header('location:profil.php');."
-    //     }</script>";
-    
-    
 
 
 // Si tous les champs sont remplis
@@ -91,7 +72,7 @@ if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && 
          // Si tout est OK on lance lA MODIFICATION
          if($erreur == false) {
          
-            $verif_id_membre = $pdo->prepare("SELECT * FROM membre WHERE id_membre = :id_membre");
+        $verif_id_membre = $pdo->prepare("SELECT * FROM membre WHERE id_membre = :id_membre");
         $verif_id_membre->bindParam(':id_membre', $id_membre, PDO::PARAM_STR);
         $verif_id_membre->execute();
 
@@ -126,22 +107,15 @@ if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && 
 
     }
 
-
-
-
-
-
-            // Si enregistrement ok on envoi sur la page connexion afin d'eviter le rechargement de la page
+    // Si enregistrement ok on envoi sur la page connexion afin d'eviter le rechargement de la page
            // header('location:connexion.php');
 
+$membre_id = $_SESSION['membre']['id_membre'];
 
+$liste_annonces = $pdo->query("SELECT id_annonce, titre, description_courte, prix, photo FROM annonce WHERE membre_id = $membre_id ORDER BY  titre");
+           
+           
 
-// CODE ...
-// echo '<pre>';
-// echo $_SESSION['membre']['pseudo'];
-// echo '<br>';
-// echo $_SESSION['membre']['tel'];
-// echo '</pre>';
 
 include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
@@ -237,8 +211,41 @@ include 'inc/nav.inc.php';
                           
                         </div>
                     </form>
+        
+                <div class="p-5 mt-5 rounded text-center shadow-lg border border-seaGreen">
+                <h2 class="seaGreen"> Vos annonces </h2>               
+                </div>
+                <div class="col-12 mt-5   rounded p-3">
+                    <table class="table bg-light table-bordered border-grayS text-center rounded">
+                    <thead class="seaGreen">
+                        <tr>
+                            <th>id</th>
+                            <th>Titre</th>
+                            <th>description courte</th>
+                            <th>prix</th>
+                            <th>photos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     <?php
+                         while($annonce = $liste_annonces->fetch(PDO::FETCH_ASSOC)){
+                                 echo '<tr>';
+                                foreach($annonce AS $indice => $valeur) {
+                                    if($indice == 'photo') {
+                                        echo'<td><img src="' . URL . 'assets/img_annonce/' . $valeur . '" width="70" class="img_fluid" alt="image produit">';
+                                    }else{
+                                        echo '<td>' . $valeur . '</td>';
+                                    }
+                                }
+                     }
+
+                    ?> 
+                    </tbody>
+                    </table>
+                </div>
+           
 
 </main>
-
+<script src="<?php echo URL; ?>assets/js/script_profil.js"></script>
 <?php
 include 'inc/footer.inc.php';

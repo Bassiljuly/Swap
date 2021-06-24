@@ -2,8 +2,8 @@
 include '../inc/init.inc.php';
 include '../inc/functions.inc.php';
 
+$liste_notes = $pdo->query("SELECT * FROM commentaire ORDER BY id_commentaire");
 
-    // CODE ...
 
 
 include '../inc/header.admin.inc.php'; 
@@ -17,7 +17,41 @@ include '../inc/nav.inc.php';
 
             <div class="row">
                 <div class="col-12 mt-5">
-                    
+                <table class="table border rounded text-center bg-secondary">
+                    <thead  class="star sw text-white  border  border">
+                        <tr>
+                            <th>Id note</th>
+                            <th>Id membre noté</th>
+                            <th>Id membre donnant la note</th>
+                            <th>Note</th>
+                            <th>Avis</th>
+                            <th>Date enregistrement</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                            
+                        while($note = $liste_notes->fetch(PDO::FETCH_ASSOC)){
+                                echo '<tr>
+                                <td>'. $note['id_note'] . '</td>
+                                <td>'. $note['membre_id1'] . '</td>
+                                <td>'.$note['membre_id2'].'</td>
+                                <td>'.$note['note'].'</td>
+                                <td>'.$note['avis'].'</td>
+                                <td>'.$note['date_enregistrement'].'</td>
+                                <td><a href="?action=supprimer&id_note=' . $note['id_note'] . '" class="btn btn-danger" onclick="return (confirm(\'êtes vous sûr ?\'))"><i class="far fa-trash-alt"></i></a></td>
+                                </tr>';
+
+                                
+                               
+                                }
+
+                        
+
+                    ?>
+                    </tbody>
+                    </table>
                 </div>
             </div>
         </main>

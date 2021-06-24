@@ -23,3 +23,10 @@ function user_is_admin() {
     return false;
     }
 }
+
+
+// Requete generale pour la barre de recherche
+// $stmt = $pdo->query("SELECT titre FROM annonce WHERE titre LIKE '%$_GET[myInputValue]%' ");
+// $suggestions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// echo json_encode($suggestions);

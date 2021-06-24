@@ -39,7 +39,7 @@ include '../inc/nav.inc.php';
                                 <td>'.$commentaire['annonce_id'].'</td>
                                 <td>'.$commentaire['commentaire'].'</td>
                                 <td>'.$commentaire['date_enregistrement'].'</td>
-                                <td><a href="?action=supprimer&id_categorie=' . $commentaire['id_categorie'] . '" class="btn btn-danger" onclick="return (confirm(\'êtes vous sûr ?\'))"><i class="far fa-trash-alt"></i></a></td>
+                                <td><a href="?action=supprimer&id_commentaire=' . $commentaire['id_commentaire'] . '" class="btn btn-danger" onclick="return (confirm(\'êtes vous sûr ?\'))"><i class="far fa-trash-alt"></i></a></td>
                                 </tr>';
 
                                 

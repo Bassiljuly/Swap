@@ -12,7 +12,7 @@ if( user_is_admin() == false ) {
 //--------------------------------------
 //--------------------------------------
 //--------------------------------------
-//-------------DELETE MEMBER------------
+//-------------DELETE CATEGORE------------
 //--------------------------------------
 //--------------------------------------
 
@@ -24,7 +24,7 @@ $suppression->bindParam(':id_categorie', $_GET['id_categorie'], PDO::PARAM_STR);
 $suppression->execute(); // executer la requete 
 }
 //--------------------------------------
-//--------------END DELETE MEMBER-------
+//--------------END DELETE CATEGORIE-------
 //--------------------------------------    
 
 $titre = '';
@@ -170,22 +170,22 @@ include '../inc/nav.inc.php';
             </div>
             <form class="row border rounded  bg-dark text-light mx-auto " method="post" action="">
                     <div class="col-12 text-center">
-                        <div class="mb-3">
-                        <p class="episode">Ajout d'une catégorie</p>
+                        <div class="mb-3 mt-3">
+                        <h3 class="seaGreen">Ajout d'une catégorie</h3>
                         </div>
                         <div class="mb-3">
                      
                              <!-- Ajout d'un champ caché contenant l'id_article pour la modification ! -->
                              <input type="hidden" readonly id="id_categorie" name="id_categorie" value="<?php echo $id_categorie; ?>">
-                            <label for="titre" class="form-label text-light"><i class="text-light fas fa-user-astronaut"></i> titre </label>
+                            <label for="titre" class="form-label text-light"><i class="seaGreen fas fa-user-alt"></i> Titre </label>
                             <input type="text" class="form-control w-50 mx-auto" id="titre" name="titre" value="<?php echo $titre; ?>">
                         </div>
                         <div class="mb-3">
-                            <label for="motcles" class="form-label text-light"><i class="text-light fas fa-user-astronaut"></i> Mots-clés </label>
+                            <label for="motcles" class="form-label text-light"><i class="seaGreen fas fa-user-alt"></i> Mots-clés </label>
                             <textarea  class="form-control w-50 mx-auto" id="motscles" name="motcles"><?php echo $motcles; ?></textarea>
                         </div>
                         <div class="mb-3 ">
-                            <button type="submit" class="btn btn-outline-success " id="ajout" ><i class="fas fa-plus"></i> ajouter <i class="fas fa-plus"></i></button>
+                            <button type="submit" class="btn bg-seaGreen" id="ajout" >Ajouter</button>
                         </div>
 
                     </div>
@@ -196,7 +196,7 @@ include '../inc/nav.inc.php';
             <br>
      <div class="row"> 
                     <table class="table border rounded text-center bg-secondary">
-                    <thead  class="star sw text-white  border  border">
+                    <thead  class="text-white border">
                         <tr>
                             <th>id</th>
                             <th>Titre</th>

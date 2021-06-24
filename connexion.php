@@ -12,7 +12,7 @@ $pseudo ='';
         header('location:connection.php');
     }
 
-    // Restriction d'acces si l'utilisateur est coonecté
+    // Restriction d'acces si l'utilisateur est connecté
     if(user_is_connected() == true) {
         header('location:profil.php');
     } 
@@ -37,7 +37,7 @@ if( isset($_POST['pseudo']) && isset($_POST['mdp'])) {
         // echo '<pre>'; print_r($infos); echo '</pre>';
         if(password_verify($mdp, $infos['mdp'])) {
             // Si le mdp est ok, on garde les info du membre connecte dans la session
-            // Creation de la $_SEESION['membre']
+            // Creation de la $_SESSION['membre']
             $_SESSION['membre'] = array();
             $_SESSION['membre']['id_membre'] = $infos['id_membre'];
             $_SESSION['membre']['pseudo'] = $infos['pseudo'];
@@ -48,7 +48,7 @@ if( isset($_POST['pseudo']) && isset($_POST['mdp'])) {
             $_SESSION['membre']['civilite'] = $infos['civilite'];
             $_SESSION['membre']['statut'] = $infos['statut'];
             $_SESSION['membre']['date_enregistrement'] = $infos['date_enregistrement'];
-            
+
             // Si il est connecte on l'envoi sur la page profil
             header('location:profil.php');
 

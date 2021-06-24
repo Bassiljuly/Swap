@@ -54,7 +54,7 @@ include '../inc/nav.inc.php';
                 <div class="col-12 mt-5">
                 <div class="row"> 
                     <table class="table border-dark rounded text-center bg-white">
-                    <thead  class="star sw text-warning  border  border-warning ">
+                    <thead  class="sw seaGreen border  border-seaGrenn ">
                         <tr>
                             <th>id</th>
                             <th>pseudo</th>

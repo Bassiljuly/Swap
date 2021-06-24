@@ -10,6 +10,9 @@ INFORMATION DE CONNEXION :
     pseudo : swapeur
     mdp : swapeur
 
-
+zip avec sources du site :
+export BDD
+URL du site
+info de connexion
 
     autre compte : sergio sergio

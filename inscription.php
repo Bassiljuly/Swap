@@ -2,10 +2,10 @@
 include 'inc/init.inc.php';
 include 'inc/functions.inc.php';
 
-    // // Restriction d'accès, si l'utilisateur est connecté, on redirige vers profil.php
-    // if( user_is_connected() == true ) {
-    //     header('location:profil.php');
-    // }
+    // Restriction d'accès, si l'utilisateur est connecté, on redirige vers profil.php
+    if( user_is_connected() == true ) {
+        header('location:profil.php');
+    }
     
     // Declaration des variables pour eviter les errerus dans le formulaire
      $pseudo = '';
@@ -108,7 +108,6 @@ include 'inc/nav.inc.php';
 ?>
         <main class="container">
 
-          
             <div class="bg-light p-5 rounded text-center shadow p-3 mb-5 bg-body rounded">
                 <h1 class="grayS"><i class="fas fa-bahai seaGreen"></i> Inscription <i class="fas fa-bahai seaGreen"></i></h1>
                 <p class="lead seaGreen ">Bienvenue sur notre site.<hr><?php echo $msg; ?></p>                

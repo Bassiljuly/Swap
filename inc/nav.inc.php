@@ -59,8 +59,10 @@
 
                     </ul>
                     <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
-                        <button class="btn btn-outline bg-grayS text-white" type="submit">Rechercher</button>
+
+ 
+                         <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search" id="datalistOptions">
+                        <button class="btn btn-outline bg-grayS text-white" type="submit" id="myDataList">Rechercher</button> 
                     </form>
                 </div>
             </div>
