@@ -2,23 +2,16 @@
 include '../inc/init.inc.php';
 include '../inc/functions.inc.php';
 
-if( user_is_admin() == false ) {
-    header('location:../connexion.php');
-}
 
-// ------ VALID USER : ADMIN------------
-//--------------------------------------
-//--------------------------------------
+
+// ------ SI L'UTILISATEUR EST ADMIN ------------
+
 if( user_is_admin() == false ) {
     header('location:../connexion.php');
     }
-//--------------------------------------
-//--------------------------------------
-//--------------------------------------
 
-//-------------DELETE MEMBER------------
-//--------------------------------------
-//--------------------------------------
+//-----------SUPPRIMER UN MEMBRE------------
+
 
 if( isset($_GET['action']) && $_GET['action'] == 'supprimer' && !empty($_GET['id_membre']) ) {
     // si l'indice action existe dans $_GET et si sa valeur est égal à supprimmer && et si id_article existe et n'est pas vide dans $_GET
@@ -27,17 +20,13 @@ if( isset($_GET['action']) && $_GET['action'] == 'supprimer' && !empty($_GET['id
     $suppression->bindParam(':id_membre', $_GET['id_membre'], PDO::PARAM_STR);// selectionner la cible de la requete
     $suppression->execute(); // executer la requete 
 }
-//--------------------------------------
-//--------------------------------------
-//--------------------------------------
+
 
 //------RECUPERATION MEMBRE-------------
-//--------------------------------------
-//--------------------------------------
+
 $liste_membre = $pdo->query("SELECT id_membre, pseudo, nom, prenom, telephone, email, civilite, statut, date_enregistrement FROM membre ORDER BY  nom");
 //--------------------------------------
-//--------------------------------------
-//--------------------------------------
+
 
 
 
@@ -52,7 +41,7 @@ include '../inc/nav.inc.php';
 
             <div class="row">
                 <div class="col-12 mt-5">
-                <div class="row"> 
+               
                     <table class="table border-dark rounded text-center bg-white">
                     <thead  class="sw seaGreen border  border-seaGrenn ">
                         <tr>

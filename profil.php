@@ -1,10 +1,9 @@
 <?php
 include 'inc/init.inc.php';
 include 'inc/functions.inc.php';
+
 // Restriction d'accès, si l'utilisateur n'est pas connecté, on redirige vers connexion.php
-if (user_is_connected() == false) {
-    header('location:connexion.php');
-}
+if (user_is_connected()) {
 
 // Declaration des variables pour eviter les errerus dans le formulaire
 $pseudo = '';
@@ -34,8 +33,16 @@ $tel ='';
 
         
     }
+// Recuperation des commentaires ---------------------------
+  // Recuperation des titre des annonces commentees
+  $info_annonce = $pdo->prepare("SELECT * FROM commentaire AS c, annonce AS a, membre AS M WHERE c.annonce_id = a.id_annonce AND m.id_membre = :membre_id ORDER BY c.date_enregistrement DESC" ) ;
+  $info_annonce->bindParam(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
 
-
+  $info_annonce->execute();
+  // Recuperation des commentaire
+ $liste_commentaires = $pdo->prepare("SELECT * FROM commentaire WHERE membre_id = :id_membre ORDER BY date_enregistrement DESC" ) ;
+ $liste_commentaires->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
+ $liste_commentaires->execute();
 
 // Si tous les champs sont remplis
 if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && isset($_POST['civilite']) && isset($_POST['tel'])) {
@@ -95,9 +102,9 @@ if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && 
         echo "<script type='text/javascript'>alert('Vos informations on bien été enregistrées. Vous allez être redirigé afin de vous reconnecter');document.location.href = 'connexion.php';
     </script>";
         
-        
+  
         // header('location:connexion.php');
-        
+      
         
     }
     
@@ -114,7 +121,10 @@ $membre_id = $_SESSION['membre']['id_membre'];
 
 $liste_annonces = $pdo->query("SELECT id_annonce, titre, description_courte, prix, photo FROM annonce WHERE membre_id = $membre_id ORDER BY  titre");
            
-           
+}else{
+    header('location:connexion.php');
+}
+
 
 
 include 'inc/header.inc.php';
@@ -148,7 +158,7 @@ include 'inc/nav.inc.php';
                 $statut = 'administrateur';
             }
             ?>
-
+<!-- AFFICHAGE DES INFO DU MEMBRE CONNECTE -->
             <h2 class="seaGreen text-center">Bonjour <?php echo ucfirst($_SESSION['membre']['nom']) . ' ' . ucfirst($_SESSION['membre']['prenom']); ?><br> Voici vos info : </h2>
 
             <ul class="list-group rounded-3">
@@ -201,17 +211,48 @@ include 'inc/nav.inc.php';
                                     <option value="f" <?php if( $civilite == 'f' ) { echo 'selected'; } ?> >femme</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 me-2">
                                 <label for="tel" class="form-label"><i class="seaGreen fas fa-phone"></i> Téléphone</label>
                                 <input type="text" class="form-control rounded-pill" id="tel" name="tel" value="<?php echo $_SESSION['membre']['tel'];  ?>">
                             </div>
-                            <div class="mb-3 mt-4">
+                            <div class="mb-3 mt-4 ms-2">
                                 <button type="submit" class="btn btn-outline bg-seaGreen w-50" id="enregistrerModiProfil" >Enregistrer</button>
                             </div>
                           
                         </div>
                     </form>
-        
+                    <!-- Affichage des commentaires si il y en a-->
+                    <?php      if ($liste_commentaires->rowCount() > 0) {?>
+                    <div class="p-5 mt-5 rounded text-center shadow-lg border border-seaGreen">
+                <h2 class="seaGreen"> On vous contacte </h2>               
+                </div>
+                    <div class="col-12 mt-5 rounded p-3">
+                    <table class="table bg-light table-bordered border-grayS text-center rounded">
+                    <thead class="seaGreen bg-light">
+                        <tr>
+                        
+                            <th>titre annonce</th>
+                            <th>commentaire</th>
+                            <th>date </th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                         while(($titreannonce = $info_annonce->fetch(PDO::FETCH_ASSOC)) && ($commentaire = $liste_commentaires->fetch(PDO::FETCH_ASSOC))){
+                                 echo '<tr><td>'.$titreannonce['titre'] .'</td><td>'.$commentaire['commentaire'] .'</td>
+                                 <td>'.$commentaire['date_enregistrement'].'</td></tr>' ;
+                              
+                     }
+      
+
+                    ?>  
+                    </tbody>
+                    </table>
+                </div>
+                <?php   }      ?>
+        <!-- Les annonces du membre connecte si il y en a-->
+        <?php      if ($liste_annonces->rowCount() > 0) {?>
                 <div class="p-5 mt-5 rounded text-center shadow-lg border border-seaGreen">
                 <h2 class="seaGreen"> Vos annonces </h2>               
                 </div>
@@ -243,7 +284,7 @@ include 'inc/nav.inc.php';
                     </tbody>
                     </table>
                 </div>
-           
+                <?php   }      ?>
 
 </main>
 <script src="<?php echo URL; ?>assets/js/script_profil.js"></script>

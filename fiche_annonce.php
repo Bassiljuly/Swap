@@ -47,6 +47,8 @@ $enregistre_comm->bindParam(':annonce_id', $id_annonce, PDO::PARAM_STR);
 $enregistre_comm->bindParam(':commentaire', $commentaire, PDO::PARAM_STR);
 $enregistre_comm->execute();
 
+// Lors de l'envoi du formulaire  on envoi sur la page d'accueil
+header('location:index.php');
 }
 
 // Si un avis et une note sont postés via le formulaire en lightbox
@@ -64,7 +66,9 @@ if(isset($_POST['notedonnee']) && isset($_POST['avisdonne'])) {
     $enregistre_avis->bindParam(':avis', $avis, PDO::PARAM_STR);
 
     $enregistre_avis->execute();
-    
+
+    // Lors de l'envoi du formulaire  on envoi sur la page d'accueil
+   // header('location:index.php');
     }
 
 
@@ -230,7 +234,7 @@ include 'inc/nav.inc.php';
         </div>
     </div>
     <!-- LightBox avis et commentaire si l'utilisateur est connecté-->
-    <?php   if(user_is_connected()== true){                    ?>
+    <?php  if(user_is_connected()== true){                    ?>
     <div class="row mt-4">
         <div class="col-6">
             <!-- Button trigger modal -->
@@ -269,22 +273,20 @@ include 'inc/nav.inc.php';
     <!-- Si l'utilisteur connete decide de laisser un commentaire  -->
                 <?php
     if(isset($_POST['noter']) && $_POST['noter'] == 'commentaire') {
-            echo '<form method="post" class="row border p-3 shadow p-3 mb-5 rounded w-25 mx-auto">
+            echo '<form method="post" class="row border p-3 shadow p-3 mb-5 mt-4 rounded w-50 mx-auto">
             <div class="col-11 col-lg-6 text-center text-white mx-auto">
             <div class="mb-3 ">
-            <label for="form_commentaire">Laisser un commentaire</label>
-            <textarea name="comm" id="comm" class=""mx-auto" rows="10"></textarea> 
+            <label for="comm">Laisser un commentaire</label>
+            <textarea name="comm" id="comm" class=""mx-auto" cols="30" rows="6"></textarea> 
             <input type="submit" class="btn btn-secondary">
             </div>
             </div>
             </form>';
 
         }elseif(isset($_POST['noter']) && $_POST['noter'] == 'avis'){
-            echo '<form method="post" class="row border p-3  shadow mb-5 rounded w-25 mx-auto">
+            echo '<form method="post" class="row border p-3  shadow mb-5 mt-5 rounded w-50 mx-auto">
             <div class="col-11 text-center mx-auto">
             <div class="mb-3  text-center">
-            <label for="avisdonne">Donnez votre avis</label>
-            <input type="text" name="avisdonne">
             <label for="notedonnee">Donnez une note sur 5</label>
             <select name="notedonnee" id="notedonnee"  class="form-control rounded-pill text-center">
             <option value="1" class="text-center">1</option>
@@ -293,6 +295,8 @@ include 'inc/nav.inc.php';
             <option value="4">4</option>
             <option value="5">5</option>
         </select>
+            <label for="avisdonne">Donnez votre avis</label>
+            <textarea name="avisdonne" id="avisdonne" cols="30" rows="6"></textarea>
         <input type="submit" class="btn btn-secondary mt-3">
         </div>
         </div>

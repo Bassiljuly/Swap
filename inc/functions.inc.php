@@ -1,6 +1,7 @@
 <?php
 
 
+
 // Creation de la fonction qui indique si l'utilisateur est connecte
 
 function user_is_connected() {
@@ -30,3 +31,11 @@ function user_is_admin() {
 // $suggestions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // echo json_encode($suggestions);
+
+
+// Deconnexion de l'utilisateur
+// if(isset($_GET['action']) && $_GET['action'] == 'deconnexion') {
+//     // destruction de la session
+//     session_destroy();
+//     header('location:connection.php');
+// }

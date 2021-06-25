@@ -17,7 +17,7 @@ if (isset($_GET['id_membre'])) {
     // Requete d'affichage des info des annonces du membre selectionné
     $id_membre = $_GET['id_membre'];
 
-    // Recuperation du embre ayant posté la note et l'avis
+    // Recuperation du membre ayant posté la note et l'avis
     $membre_post = $pdo->prepare("SELECT * FROM membre, note WHERE membre_id2 = :id_membre AND membre_id1 = id_membre");
     $membre_post->bindParam(':id_membre', $_GET['id_membre'], PDO::PARAM_STR);
     $membre_post->execute();

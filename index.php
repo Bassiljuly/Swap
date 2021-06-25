@@ -61,13 +61,13 @@ include 'inc/nav.inc.php';
         <div class="row ">
 
 
-            <!-- Filtre par prix -->
-            <div class="col-3 text-center  ">
+        <!-- Price filter -->
+        <div class="col-3 text-center">
             <form action="" class="bg-grayS rounded pb-2" method="post">
-                <div class="mb-3  p-3  text-white">
-                    <label for="prix" class="form-label text-center ">Choisir un prix maximum</label>
+                <div class="mb-3  p-3 star text-white ">
+                    <label for="prix" class="form-label text-center ">Prix</label>
                     <input type="range" name="prix" value="10000" min="0" max="10000" oninput="prixMax.value=parseInt(prix.value)+parseInt(prix.value)" class="form-range" id="customRange1">
-                    <!-- <input type="number" class="d-none" name="a" value="0"> -->
+                    
                     <output name="prixMax">10000</output>
                 </div>
                 <div class="mb-3 mt-4">

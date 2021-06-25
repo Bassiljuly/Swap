@@ -51,7 +51,7 @@ include '../inc/nav.inc.php';
 ?>
 
 
-<main class="container">
+<main class="container mx-auto">
     <div class="bg-light p-5 rounded text-center shadow p-3 mb-5 bg-body rounded">
         <h1 class="grayS"><i class="fas fa-bahai seaGreen"></i> Gestion des annonces <i class="fas fa-bahai seaGreen"></i></h1>
         <p class="lead seaGreen ">Bienvenue
@@ -59,8 +59,11 @@ include '../inc/nav.inc.php';
            
     </div>
     <div class="row">
-        <table class="table border rounded text-center bg-secondary">
-            <thead class="star sw text-white  border  border">
+                <div class="col-12 mt-5 px-0">
+        
+   
+        <table class="table border rounded text-center bg-secondary ">
+            <thead class="text-white border">
             <tr>
                             <th>Id</th>
                             <th>Titre</th>
@@ -111,9 +114,9 @@ include '../inc/nav.inc.php';
             </tbody>
         </table>
       
+                </div>
     </div>
     </div>
- 
 </main>
 <?php
 include '../inc/footer.inc.php';

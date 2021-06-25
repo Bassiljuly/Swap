@@ -2,7 +2,7 @@
            <div class="contour bg-seaGreen">
                <div class="row text-center grayS pt-2">
                    <div class="col-3 my-auto">
-                        <a href="#" class="text-white text-decoration-none">Mentions légales</a>
+                        <a href="<?php echo URL;?>mentionslegales.php" class="text-white text-decoration-none">Mentions légales</a>
                    </div>
                    <div class="col-6">
                        <p class="logo"><a  href="<?php echo URL;?>index.php" class="text-decoration-none grayS text-uppercase">Swap</a></p>
@@ -11,7 +11,7 @@
                        <p>Site non commercial réalisé dans le cadre d'un examen © Julie Bassil</p>
                    </div>
                    <div class="col-3 my-auto">
-                       <a href="#" class="text-white text-decoration-none">Conditions générales de vente</a>
+                       <a href="<?php echo URL;?>cvg.php" class="text-white text-decoration-none">Conditions générales de vente</a>
                    </div>
                </div>
            </div>

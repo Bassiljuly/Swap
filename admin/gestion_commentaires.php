@@ -3,9 +3,24 @@ include '../inc/init.inc.php';
 include '../inc/functions.inc.php';
 
 
+// Si l'utilisateur n'est pas admin on redirige vers connexion.php
+if( user_is_admin() == false ) {
+    header('location:../connexion.php');
+    }
+
+// Recuperation des commentaires 
+
  $liste_commentaires = $pdo->query("SELECT * FROM commentaire ORDER BY id_commentaire");
 
+// Supprimer un commentaire
 
+if( isset($_GET['action']) && $_GET['action'] == 'supprimer' && !empty($_GET['id_commentaire']) ) {
+    // si l'indice action existe dans $_GET et si sa valeur est égal à supprimmer && et si id_commentaire existe et n'est pas vide dans $_GET
+    // Requete delete basée sur l'id_article pour supprimer le commentaire en question.
+    $suppression = $pdo->prepare("DELETE FROM commentaire WHERE id_commentaire = :id_commentaire");// preparer la requete
+    $suppression->bindParam(':id_commentaire', $_GET['id_commentaire'], PDO::PARAM_STR);// selectionner la cible de la requete
+    $suppression->execute(); // executer la requete 
+    }
 
 include '../inc/header.admin.inc.php'; 
 include '../inc/nav.inc.php';
@@ -55,6 +70,5 @@ include '../inc/nav.inc.php';
             </div>
         </main>
 
-<?php 
+ <?php 
 include '../inc/footer.inc.php';
- 
