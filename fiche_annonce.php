@@ -3,7 +3,7 @@ include 'inc/init.inc.php';
 include 'inc/functions.inc.php';
 
 if (isset($_GET['id_annonce'])) {
-    $infos_annonce = $pdo->prepare("SELECT * FROM annonce WHERE id_annonce = :id_annonce");
+    $infos_annonce = $pdo->prepare("SELECT * ,  DATE_FORMAT(date_enregistrement, '%d/%m/%Y à %Hh:%i.' ) AS 'date_post' FROM annonce WHERE id_annonce = :id_annonce");
     $infos_annonce->bindParam(':id_annonce', $_GET['id_annonce'], PDO::PARAM_STR);
     $infos_annonce->execute();
 
@@ -26,7 +26,7 @@ if (isset($_GET['id_annonce'])) {
         $membre_info = $info_membre->fetch(PDO::FETCH_ASSOC);
 
         // On propose d'autres annonces
-        $liste_annonces = $pdo->query("SELECT id_annonce, titre, description_courte, prix, photo FROM annonce ORDER BY  date_enregistrement");
+        $liste_annonces = $pdo->query("SELECT id_annonce, titre, description_courte, prix, photo FROM annonce ORDER BY  date_enregistrement LIMIT 6");
     } else {
 
         header('location:index.php');
@@ -180,7 +180,7 @@ include 'inc/nav.inc.php';
     <div class="row mt-2">
         <div class="col-3 mt-2">
             <!-- DATE PUBLICATION -->
-            <i class="fas fa-calendar-alt seaGreen"></i> <?php echo $infos['date_enregistrement']; ?>
+            <i class="fas fa-calendar-alt seaGreen"></i> <?php echo $infos['date_post']; ?>
         </div>
         <div class="col-3 mt-2">
             <!-- NOTE AVIS -->
@@ -199,37 +199,18 @@ include 'inc/nav.inc.php';
     </div>
     <div class="row mt-2">
         <div class="col-12">
-            <?php
-            // Google Maps Geocoder
-            // $geocoder = "http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false";
-
-            // $arrAddresses = Address::LoadAll(); // Notre collection d'objets Address
-
-            // foreach ($arrAddresses as $address) {
-
-            //         if (strlen($address->Lat) == 0 && strlen($address->Lng) == 0) {
-
-            //             $addesse = $membre_info['cp'];
-            //             $adresse = $membre_info['adresse']->Rue;
-            //             $adresse .= ', '.$membre_info['cp']->CodePostal;
-            //             $adresse .= ', '.$membre_info['ville']->Ville;
-
-            //             // Requête envoyée à l'API Geocoding
-            //             $query = sprintf($geocoder, urlencode(utf8_encode($adresse)));
-
-            //             $result = json_decode(file_get_contents($query));
-            //             $json = $result->results[0];
-
-            //             $adress->Lat = (string) $json->geometry->location->lat;
-            //             $adress->Lng = (string) $json->geometry->location->lng;
-            //             $adress->Save();
-
-            //          }
-            // }
-            //             
-            ?>
+          
             <!-- GOOGLE MAP -->
-
+                    <?php 
+                    echo '<iframe
+                    width="600"
+                    height="450"
+                    style="border:0"
+                    loading="lazy"
+                    allowfullscreen
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDLaE0tVOSsYqM1iG0Y6bmPSwmcZ7haGD8&q='.$infos['cp'].','.$infos['ville'].'">
+                  </iframe>'  
+                    ?>
 
         </div>
     </div>
@@ -270,7 +251,7 @@ include 'inc/nav.inc.php';
         </div>
     </div>
     <?php }    ?>
-    <!-- Si l'utilisteur connete decide de laisser un commentaire  -->
+    <!-- Si l'utilisteur connecte decide de laisser un commentaire  -->
                 <?php
     if(isset($_POST['noter']) && $_POST['noter'] == 'commentaire') {
             echo '<form method="post" class="row border p-3 shadow p-3 mb-5 mt-4 rounded w-50 mx-auto">

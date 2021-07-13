@@ -2,18 +2,14 @@
 include '../inc/init.inc.php';
 include '../inc/functions.inc.php';
 
-// ------ VALID USER : ADMIN------------
-//--------------------------------------
-//--------------------------------------
+// ------ ACCES A L'ADMIN------------
+
 if (user_is_admin() == false) {
     header('location:../connexion.php');
 }
-//--------------------------------------
-//--------------------------------------
-//--------------------------------------
-// $req_membre = $pdo->query('SELECT membre.pseudo FROM membre membre, annonce annonce WHERE  annonce.membre_id = membre.id_membre');
+
+
 //-------------SUPPRIMER ANNONCE------------
-//--------------------------------------
 //--------------------------------------
 
 if (isset($_GET['action']) && $_GET['action'] == 'supprimer' && !empty($_GET['id_annonce'])) {
@@ -24,12 +20,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'supprimer' && !empty($_GET['id
     $suppression->execute(); // executer la requete 
 }
 //--------------------------------------
-//--------------------------------------
-//--------------------------------------
 
 //------RECUPERATION ANNONCE-------------
-//--------------------------------------
-//--------------------------------------
 // $liste_annonce = $pdo->query("SELECT * FROM annonce ORDER BY  titre");
 $liste_annonce = $pdo->query("SELECT annonce.*, pseudo AS membre, categorie.titre AS categorie FROM annonce
 LEFT JOIN membre ON membre.id_membre = annonce.membre_id
@@ -102,7 +94,7 @@ include '../inc/nav.inc.php';
                     }
                 }
                 // r    Rajout de deux liens pour les actions : search, supprimer
-                echo '<td><a href="diw59/php/swap/fiche_annonce.php?&id_annonce=' . $annonce['id_annonce'] . ' " class="btn btn-warning btn-yellow"><i class="fas fa-search"></i></a></td>';
+                echo '<td><a href="../fiche_annonce.php?&id_annonce=' . $annonce['id_annonce'] . ' " class="btn btn-warning btn-yellow"><i class="fas fa-search"></i></a></td>';
                 // echo '<td><a href="?action=modifier&id_annonce=' . $annonce['id_annonce'] . ' " class="btn btn-warning"><i class="far fa-edit"></i></a></td>';
                 echo '<td><a href="?action=supprimer&id_annonce=' . $annonce['id_annonce'] . '" class="btn btn-danger" onclick="return(confirm(\'Êtes vous sûr de supprimer ?\'))"><i class="far fa-trash-alt"></i></a></td>';
                 echo '</tr>';

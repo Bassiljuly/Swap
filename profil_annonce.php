@@ -37,6 +37,8 @@ if (isset($_GET['id_membre'])) {
     //   $membre_notant->bindParam('id_membre', $_GET['id_membre'], PDO::PARAM_STR);
     //   $membre_notant->execute();
 
+        // moyenne générale des notes de la personne ayant posté l'annonce
+        $rec_note = $pdo->query(" SELECT  FLOOR(AVG(note)) FROM note WHERE membre_id2 = " . $_GET['id_membre'] . "");
 
 
 }
@@ -73,6 +75,28 @@ include 'inc/nav.inc.php';
             <div class="col-8 mt-5">
                 <p><span class="fw-bold">Prénom :</span> <?php echo $membre_info['prenom']     ?></p>
                 <p><span class="fw-bold">Téléphone :</span> <?php echo $membre_info['telephone']     ?></p>
+                <!-- ON RECUPERER LA NOTE MOYENNE DU MEMBRE -->
+                <?php echo'Sa note moyenne est de :  '; $moyenne_note = $rec_note->fetch(PDO::FETCH_ASSOC);
+                        // echo 'Votre notre général est : ' . $moyenne_note['FLOOR(AVG(note))'] .'';
+                        
+                        if ($moyenne_note['FLOOR(AVG(note))'] == 1) {
+                            echo  '<i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>';
+                        } elseif ($moyenne_note['FLOOR(AVG(note))']== 2) {
+                            echo  '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>';
+                        } elseif ($moyenne_note['FLOOR(AVG(note))'] == 3) {
+                            echo  '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>';
+                        } elseif ($moyenne_note['FLOOR(AVG(note))'] == 4) {
+                            echo  '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>';
+                        } elseif ($moyenne_note['FLOOR(AVG(note))'] == 5) {
+                            echo '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
+                        }
+
+                        
+                        
+                        
+                    
+                
+                ?>
                 <div><span class="fw-bold">Notes et avis :</span>
                     <?php
 
@@ -94,7 +118,7 @@ include 'inc/nav.inc.php';
                             //On reucpere les infos du membrequi poste la note
                            $membre_posteur = $membre_post->fetch(PDO::FETCH_ASSOC);
 
-                            echo '<p>Posté par ' . $membre_posteur['pseudo']. ' : ' . $noteetoilee . ' ' . $note['avis'] . ', le ' . $note['date_enregistrement']    . '</p>';
+                            echo '<p>Posté par ' . $membre_posteur['pseudo']. ' : ' . $noteetoilee . ' " ' . $note['avis'] . ' " , le ' . $note['date_enregistrement']    . '</p>';
                         } 
                     }else{
                     echo '<p>Ce membre n\'a notes ni d\'avis</p>';}

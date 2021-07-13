@@ -8,10 +8,8 @@ include 'inc/functions.inc.php';
 if( user_is_connected() == false ) {
     header('location:../connexion.php');
 }
-
 //****************************************************** 
-// RECUPERATION DES VARIABLES POUR EVITER LES ERREURS DANS LE FORMULAIRE
-$id_annonce = "";
+// RECUPERATION DES VARIABLES POUR EVITER LES ERREURS DANS LE FIRMULAIRE
 $titre = '';
 $description_courte = '';
 $description_longue = '';
@@ -27,11 +25,11 @@ $ville = '';
 $adresse = '';
 $cp ='';
 
-
 //*******************************************
 // RECUPERATION DES CATEGORIES
 
 $recup_categorie = $pdo->query('SELECT * FROM categorie ORDER BY titre');
+
 
 
 
@@ -60,16 +58,16 @@ if(isset($_POST['titre']) &&
     $cp = trim($_POST['cp']);
     // SI ERREUR
     $erreur = false;
-     // CONTROLE DU PRIX
+    // CONTROLE DU PRIX
     if(!is_numeric($prix)) {
         $prix = 0;
         $msg .= '<div class="alert alert-warning" role="alert"> Cet article n\'ayant pas un prix, le prix a été mis à zéro.</div>';
     }
-   // CONTROLE DES PHOTO
-
+    // CONTROLE DES PHOTO
+    //
     if( !empty($_FILES['photo1']['name']) ) {
-        // controle de l'extension du fichier
-        $tab_extension = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+        // extension control and extension accepted : jpg, jpeg, png, gif, webp
+            $tab_extension = array('jpg', 'jpeg', 'png', 'gif', 'webp');
         // on découpe la  chaine depuis la fin pour récupérer ce qui se trouve après le dernier "."
             $extension1 = pathinfo($_FILES['photo1']['name'], PATHINFO_EXTENSION);
             $extension2 = pathinfo($_FILES['photo2']['name'], PATHINFO_EXTENSION);
@@ -77,7 +75,7 @@ if(isset($_POST['titre']) &&
             $extension4 = pathinfo($_FILES['photo4']['name'], PATHINFO_EXTENSION);
             $extension5 = pathinfo($_FILES['photo5']['name'], PATHINFO_EXTENSION);
 
-   // CREATION DE NOM UNIQUE POUR LES PHOTO
+        // CREATION DE NOM UNIQUE POUR LES PHOTO
         //  POUR CELA ON CREE UN NOMBRE ALEATOIRE AVEC LE RANDOM
         if(!empty($_FILES['photo1']['name'])){
             $random = random_int(1, 1000);
@@ -89,14 +87,13 @@ if(isset($_POST['titre']) &&
        
         
             
-           
         // VERIFICATION DES EXTENSION DES PHOTO
         // in_array() 
         //photo1
         if( in_array($extension1, $tab_extension) ) {
             // On enlève les espaces et on les remplace par un -  dans le noms des images : 
             $photo1 = str_replace(' ', '-', $photo1);
-            // REGEX of replacement caracter
+            // REGEX 
             $photo1 = preg_replace('/[^A-Za-z0-9.\-]/', '', $photo1);
             // copy() // ON ENVOI LES PHOTO DANS LE DOSSIER img_annonce
             copy($_FILES['photo1']['tmp_name'], ROOT_PATH . PROJECT_PATH . 'assets/img_annonce/' . $photo1);
@@ -157,6 +154,7 @@ if(isset($_POST['titre']) &&
                 $photo5 = $random . '-' . $_FILES['photo5']['name'];
             
             if( in_array($extension5, $tab_extension) ) {
+        //   $photo5 = $random_int(1, 1000) . '-' . $_FILES['photo5']['name'];
             $photo5 = str_replace(' ', '-', $photo5);
             $photo5 = preg_replace('/[^A-Za-z0-9.\-]/', '', $photo5);
             copy($_FILES['photo5']['tmp_name'], ROOT_PATH . PROJECT_PATH . 'assets/img_annonce/' . $photo5);
@@ -176,8 +174,7 @@ if(isset($_POST['titre']) &&
             $enregistrement_photo->execute();
             $id_photo = $pdo->lastInsertId();
                 
-                // PUIS ENREGISTREMENT DES INFO DANS LA TABLE ANNONCE
-
+        // PUIS ENREGISTREMENT DES INFO DANS LA TABLE ANNONCE
             $recup_categorie_id = $recup_categorie->fetch(PDO::FETCH_ASSOC);
             $id_categorie = $recup_categorie_id['id_categorie'];
             $enregistrement_annonce = $pdo->prepare("INSERT INTO annonce (titre, description_courte, description_longue, prix, photo, pays, ville, adresse, cp, membre_id, photo_id, categorie_id, date_enregistrement) VALUES (:titre, :description_courte, :description_longue, :prix, :photo, :pays, :ville, :adresse, :cp, :membre_id, :photo_id, :categorie_id, NOW())");
@@ -202,61 +199,34 @@ if(isset($_POST['titre']) &&
 
         }
 } 
-    // ------------------ POUR MODIFICATION ------------------------
-        // On vérifie si l'id_membre existe et n'est pas vide : si c'est le cas, on est en modification
-        if( isset($_GET['action']) && $_GET['action'] == 'modifier' && !empty($_GET['id_annonce']) ) {
-            $id_annonce = trim($_POST['id_annonce']);
-            
-            // Si tout est OK on lance lA MODIFICATION
-    
-         
-        $verif_id_annonce = $pdo->prepare("SELECT * FROM annonce WHERE id_annonce = :id_annonce");
-        $verif_id_annonce->bindParam(':id_annonce', $id_annonce, PDO::PARAM_STR);
-        $verif_id_annonce->execute();
-
-        // Il ne faut pas vérifier si la référence  existe dans le cadre d'une modif, donc on rajoute un controle sur id_membre qui doit être vide. Car en cas d'insert, l'id_membre sera vide, en revanche sur une  modif il n'est pas vide.
-        if( $verif_id_membre->rowCount()>= 1) {
-          
-            $enregistrement = $pdo->prepare("UPDATE annonce SET  titre = :titre, description_courte = :description_courte, description_longue = :description_longue, prix = :prix, photo = :photo, ville = :ville, adresse = :adresse, cp = :cp, membre_id = :membre_id, photo_id= :photo_id, categorie_id= :categorie_id WHERE id_annonce = :id_annonce");
-        
-            $enregistrement_annonce->bindParam(':titre', $titre, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':description_courte', $description_courte, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':description_longue', $description_longue, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':prix', $prix, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':photo', $photo1, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':pays', $pays, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':ville', $ville, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':adresse', $adresse, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':cp', $cp, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':photo_id', $id_photo, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':categorie_id', $_POST['categorie'] , PDO::PARAM_STR);
-            $enregistrement_annonce->execute();
-
-        }}
 
 
 //-------------SUPPRESSION ANNONCE------------
 
 
 if( isset($_GET['action']) && $_GET['action'] == 'supprimer' && !empty($_GET['id_annonce']) ) {
-   // si l'indice action existe dans $_GET et si sa valeur est égal à supprimmer && et si id_annonce existe et n'est pas vide dans $_GET
+    // si l'indice action existe dans $_GET et si sa valeur est égal à supprimmer && et si id_annonce existe et n'est pas vide dans $_GET
     // Requete delete basée sur l'id_annonce pour supprimer l'annonce  en question.
+
     $select_annonce = $pdo->prepare("SELECT * FROM annonce WHERE id_annonce = :id_annonce");
     $select_annonce->bindParam(':id_annonce', $_GET['id_annonce'], PDO::PARAM_STR);
     $select_annonce->execute();
     $annonce_suppr = $select_annonce->fetch(PDO::FETCH_ASSOC);
     $id_photo_supp = $annonce_suppr['photo_id'];
 
+  
 
     $suppression = $pdo->prepare("DELETE FROM annonce WHERE id_annonce = :id_annonce");// preparer la requete
     $suppression->bindParam(':id_annonce', $_GET['id_annonce'], PDO::PARAM_STR);// selectionner la cible de la requete
 
 
+        // Suppression des photo dans la BDD
     $suppression_id_photo = $pdo->prepare("DELETE FROM photo WHERE id_photo = :photo_id");
     $suppression_id_photo->bindParam(':photo_id',$id_photo_supp, PDO::PARAM_STR);
     $suppression_id_photo->execute();
     $suppression->execute(); // executer la requete
+
+
     
 }
 
@@ -265,6 +235,9 @@ $membre_id = $_SESSION['membre']['id_membre'];
 
 // RECUPERATION DES ANNONCES DU MEMBRE CONNECTE
 $liste_annonces = $pdo->query("SELECT id_annonce, titre, description_courte, prix, photo FROM annonce WHERE membre_id = $membre_id ORDER BY  titre");
+
+
+
 
 include 'inc/header.inc.php'; 
  include 'inc/nav.inc.php';
@@ -277,9 +250,6 @@ include 'inc/header.inc.php';
 <!-- FORMULAIRE AJOUT ANNONCE -->
                 <form class="row border p-3 bg-grayS shadow p-3 mb-5 rounded" method="post" action="" enctype="multipart/form-data">
                         <div class="col-sm-6 text-center text-white">
-                        <div class="mb-3">
-                                <input type="text" class="form-control rounded-pill" id="id_annonce" name="titre" value="<?php echo $id_annnonce; ?>" hidden>
-                            </div>
                             <div class="mb-3">
                                 <label for="titre" class="form-label"><i class="fas fa-pencil-alt seaGreen"></i> Titre</label>
                                 <input type="text" class="form-control rounded-pill" id="titre" name="titre" value="<?php echo $titre; ?>">
@@ -407,11 +377,7 @@ include 'inc/header.inc.php';
             </div>
                     <?php } ?>
             
-                    
         </main>
 
 <?php 
 include 'inc/footer.inc.php';
-
-
-

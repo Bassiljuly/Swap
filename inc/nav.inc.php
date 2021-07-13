@@ -50,7 +50,7 @@
                                 <a class="dropdown-item" href="<?php echo URL; ?>admin/gestion_notes.php">Gestion des notes</a>
                                 <a class="dropdown-item" href="<?php echo URL; ?>admin/gestion_commentaires.php">Gestion des commentaires</a>
                                 <a class="dropdown-item" href="<?php echo URL; ?>admin/statistiques.php">Statistiques</a>
-                                <a class="dropdown-item" href="<?php echo URL; ?>admin/precisions.php">Precisions</a>
+                           
                             </div>
                         </li>
 
@@ -58,11 +58,11 @@
                         <!-- /liens pour l'admin -->
 
                     </ul>
-                    <form class="d-flex">
-
- 
-                         <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search" id="datalistOptions">
-                        <button class="btn btn-outline bg-grayS text-white" type="submit" id="myDataList">Rechercher</button> 
+                 <!-- Formulaire de recherche -->
+                    <form class="d-flex" method="GET">
+                    <input class="form-control me-2" list="datalistOptions" id="myDataList" placeholder="Rechercher">
+                    <datalist id="datalistOptions">
+                    </datalist>
                     </form>
                 </div>
             </div>

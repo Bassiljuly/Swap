@@ -41,9 +41,6 @@ if(isset($_POST['prix']) ){
     $liste_annonces->execute();
   //  header('location:index.php');
   
-}else {
-    echo '<div class="col-12 alert alert-danger">Nous n\'avons aucune annonce sous ce prix !</div>';
-
 }
 
 include 'inc/header.inc.php';

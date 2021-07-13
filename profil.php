@@ -40,9 +40,22 @@ $tel ='';
 
   $info_annonce->execute();
   // Recuperation des commentaire
- $liste_commentaires = $pdo->prepare("SELECT * FROM commentaire WHERE membre_id = :id_membre ORDER BY date_enregistrement DESC" ) ;
- $liste_commentaires->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
- $liste_commentaires->execute();
+//  $liste_commentaires = $pdo->prepare("SELECT *, DATE_FORMAT(date_enregistrement, '%d/%m/%Y à %Hh:%i.' ) AS 'date_post' FROM commentaire WHERE membre_id = :id_membre ORDER BY date_enregistrement DESC" ) ;
+//  $liste_commentaires->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
+//  $liste_commentaires->execute();
+
+  // Recuperation des commentaire sur nos propres annonces 
+  $info_commentaires = $pdo->prepare("SELECT *, commentaire.date_enregistrement AS date_enre, annonce.titre AS titre_a, membre.pseudo AS pseudo FROM commentaire AS commentaire INNER JOIN annonce AS annonce ON commentaire.annonce_id = annonce.id_annonce  INNER JOIN membre AS membre ON commentaire.membre_id = membre.id_membre WHERE commentaire.membre_id_2 = " . $_SESSION['membre']['id_membre'] . "");
+  $info_commentaires->execute();
+//requete d'enregistrement de la réponse 
+
+      
+  if(isset($_POST['reponse'])){
+      $enregistrement_reponse = $pdo->prepare("UPDATE commentaire SET reponse = :reponse WHERE id_commentaire = :id_commentaire");
+      $enregistrement_reponse->bindParam(':reponse', $_POST['reponse'], PDO::PARAM_STR);
+      $enregistrement_reponse->bindParam(':id_commentaire', $_POST['id_commentaire'], PDO::PARAM_STR);
+      $enregistrement_reponse->execute();
+  }    
 
 // Si tous les champs sont remplis
 if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && isset($_POST['civilite']) && isset($_POST['tel'])) {
@@ -69,7 +82,7 @@ if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && 
         }
 
           // POUR MODIFICATION
-        // On vérifie si l'id_article existe et n'est pas vide : si c'est le cas, on est en modification
+        // On vérifie si l'id_membre existe et n'est pas vide : si c'est le cas, on est en modification
         if( !empty($_POST['id_membre']) ) {
             $id_membre = trim($_POST['id_membre']);
         } else  {
@@ -183,7 +196,7 @@ include 'inc/nav.inc.php';
             <a href="?action=supprimer&id_membre='<?php $_SESSION['membre']['id_membre'] ?> '" class="btn btn-danger" ><i class="far fa-trash-alt text-white"></i>Supprimer</a>
         </div>
     </div>
-    
+    <!-- Formulaire de modification des infos du membre -->
     <form class="row border p-3 bg-grayS shadow p-3 mb-5 rounded hidden" id="formprofil" method="post" action="">
                         <div class="col-sm-6 text-center text-white">
                         <div class="mb-3">
@@ -222,11 +235,60 @@ include 'inc/nav.inc.php';
                         </div>
                     </form>
                     <!-- Affichage des commentaires si il y en a-->
-                    <?php      if ($liste_commentaires->rowCount() > 0) {?>
+                    <?php     if ($info_commentaires->rowCount() > 0) {?>
                     <div class="p-5 mt-5 rounded text-center shadow-lg border border-seaGreen">
                 <h2 class="seaGreen"> On vous contacte </h2>               
                 </div>
-                    <div class="col-12 mt-5 rounded p-3">
+
+                <div class="col-12 mt-5   rounded p-3">
+                    <table class="able bg-light table-bordered border-grayS text-center rounded">
+                    <thead class="seaGreen bg-light">
+                        <tr>
+                        
+                            <th>Titre annonce</th>
+                            <th>Commentaire</th>
+                            <th>Date </th>
+                            <th>Répondre</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                         while(($titreannonce = $info_annonce->fetch(PDO::FETCH_ASSOC)) && ($commentaire = $info_commentaires->fetch(PDO::FETCH_ASSOC))){
+                            if (empty($commentaire['reponse'])){
+                                 echo '<tr><td>'.$titreannonce['titre'] .'</td>
+                                           <td>'.$commentaire['commentaire'] .'</td>
+                                           <td>'.$commentaire['date_enregistrement'].'</td> 
+                                           <td> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#avis">
+                                           répondre
+                                       </button>
+                           
+                                       <!-- Modal -->
+                                       <div class="modal fade p-4" id="avis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                           <div class="modal-dialog">
+                                               <div class="modal-content">
+                                                   <div class="modal-header">
+                                                       <h5 class="modal-title" id="exampleModalLabel">Réponse</h5>
+                                                       <form class="row" method="post">
+                                                       <input type="hidden" name="id_commentaire" value="'.$commentaire['id_commentaire'].'">
+                                                       <textarea class="form-control rounded" id="reponse" name="reponse"></textarea>
+                                                       <button type="submit" class="btn btn-primary">envoyer</button>
+                                                       </form>
+                                                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div></td>
+                                        </tr>';
+                            }
+                              
+                     }
+      
+
+                    ?>  
+                    </tbody>
+                    </table>
+                </div>
+                    <!-- <div class="col-12 mt-5 rounded p-3">
                     <table class="table bg-light table-bordered border-grayS text-center rounded">
                     <thead class="seaGreen bg-light">
                         <tr>
@@ -239,18 +301,21 @@ include 'inc/nav.inc.php';
                     </thead>
                     <tbody>
                     <?php
-                         while(($titreannonce = $info_annonce->fetch(PDO::FETCH_ASSOC)) && ($commentaire = $liste_commentaires->fetch(PDO::FETCH_ASSOC))){
-                                 echo '<tr><td>'.$titreannonce['titre'] .'</td><td>'.$commentaire['commentaire'] .'</td>
-                                 <td>'.$commentaire['date_enregistrement'].'</td></tr>' ;
+                    //      while(($titreannonce = $info_annonce->fetch(PDO::FETCH_ASSOC)) && ($commentaire = $liste_commentaires->fetch(PDO::FETCH_ASSOC))){
+                    //              echo '<tr><td>'.$titreannonce['titre'] .'</td><td>'.$commentaire['commentaire'] .'</td>
+                    //              <td>'.$commentaire['date_post'].'</td></tr>' ;
                               
-                     }
+                    //  }
       
 
                     ?>  
                     </tbody>
                     </table>
-                </div>
+                </div> -->
                 <?php   }      ?>
+
+                <div>Pour modifier votre annonce rendez-vous sur la page <a href="depot_annonce.php">Ajout annonces</a></div>
+
         <!-- Les annonces du membre connecte si il y en a-->
         <?php      if ($liste_annonces->rowCount() > 0) {?>
                 <div class="p-5 mt-5 rounded text-center shadow-lg border border-seaGreen">

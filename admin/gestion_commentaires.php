@@ -37,9 +37,10 @@ include '../inc/nav.inc.php';
                     <thead  class="star sw text-white  border  border">
                         <tr>
                             <th>Id commentaire</th>
-                            <th>Id membre</th>
+                            <th>Id membre commentant</th>
                             <th>Id annonce</th>
                             <th>Commentaire</th>
+                            <th>Membre commenté</th>
                             <th>Date d'enregistrement</th>
                             <th>Actions</th>
                         </tr>
@@ -53,6 +54,7 @@ include '../inc/nav.inc.php';
                                 <td>'. $commentaire['membre_id'] . '</td>
                                 <td>'.$commentaire['annonce_id'].'</td>
                                 <td>'.$commentaire['commentaire'].'</td>
+                                <td>'.$commentaire['membre_id_2'].'</td>
                                 <td>'.$commentaire['date_enregistrement'].'</td>
                                 <td><a href="?action=supprimer&id_commentaire=' . $commentaire['id_commentaire'] . '" class="btn btn-danger" onclick="return (confirm(\'êtes vous sûr ?\'))"><i class="far fa-trash-alt"></i></a></td>
                                 </tr>';
