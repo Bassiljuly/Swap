@@ -49,27 +49,29 @@ include '../inc/nav.inc.php';
                 <div class="col-12">
                     <ul>
                         <?php
-                        // On crée un compteur pour le lister mes membres das l'ordre
-                        $counter = 0;
-
-                        while (($meilleurs_membres = $liste_membres->fetch(PDO::FETCH_ASSOC)) && ($nb_avis_membre = $nb_avis->fetch(PDO::FETCH_ASSOC))) {
-
-                            //On ajoute +1 au compteur a chaque tour
-                            $counter++;
-                            // On recupère les infos souhaitées
-                            foreach ($meilleurs_membres as $indice => $valeur) {
-
-                                if ($indice == 'pseudo') {
-                                    echo '<li class="p-2">' . $counter . ' - <span class="text-white ps-3"> ' . $valeur . '</span> ';
-                                } elseif ($indice == 'note_moyenne') {
-
-
-                                    echo '<span class="bg-light p-1 ms-3 border border-rounded">' . $valeur . ' étoiles sur ' . $nb_avis_membre['nb_note'] . ' avis</span></li>';
-                                }
-                            }
-                        };
-
-                 
+                         
+                           // On crée un compteur pour le lister mes membres das l'ordre
+                           $counter = 0;
+   
+                           while (($meilleurs_membres = $liste_membres->fetch(PDO::FETCH_ASSOC)) && ($nb_avis_membre = $nb_avis->fetch(PDO::FETCH_ASSOC))) {
+   
+                               //On ajoute +1 au compteur a chaque tour
+                               $counter++;
+                               // On recupère les infos souhaitées
+                               foreach ($meilleurs_membres as $indice => $valeur) {
+   
+                                   if ($indice == 'pseudo') {
+                                       echo '<li class="p-2">' . $counter . ' - <span class="text-white ps-3"> ' . $valeur . '</span> ';
+                                   } elseif ($indice == 'note_moyenne') {
+   
+   
+                                       echo '<span class="bg-light p-1 ms-3 border border-rounded">' . $valeur . ' étoiles sur ' . $nb_avis_membre['nb_note'] . ' avis</span></li>';
+                                   }
+                               }
+                           };
+   
+                    
+                           
                         ?>
                     </ul>
                 </div>

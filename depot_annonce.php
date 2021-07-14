@@ -34,7 +34,84 @@ $cp ='';
 $recup_categorie = $pdo->query('SELECT * FROM categorie ORDER BY titre');
 
 
+//**************************************************************************************************** */
+// ------------------ POUR MODIFICATION ------------------------
+if(isset($_GET['action']) && $_GET['action'] == 'modifier' && !empty($_GET['id_annonce'])){
+    // Pour la modification d'un annonce il faut proposer à l'utilisateur les données déjà enregistrées afin qu'il ne change que la ou les valeurs qu'il souhaite
+    // Une requete pour récupérer les infos de cette annonce, un fetch et on affiche dasn le form via les variables déjà en place dans le form
+    
+    $modification = $pdo->prepare('SELECT * FROM annonce WHERE id_annonce = :id_annonce');
+    $modification->bindParam(':id_annonce', $_GET['id_annonce'], PDO::PARAM_STR);
+    $modification->execute();
+  
+    $infos_annonce = $modification->fetch(PDO::FETCH_ASSOC);
+    $id_annonce = $infos_annonce['id_annonce'];
+    $titre = $infos_annonce['titre'];
+    $description_courte = $infos_annonce['description_courte'];
+    $description_longue = $infos_annonce['description_longue'];
+    $prix = $infos_annonce['prix'];
+    $photo = $infos_annonce['photo'];
+    $pays = $infos_annonce['pays'];
+    $ville = $infos_annonce['ville'];
+    $adresse = $infos_annonce['adresse'];
+    $cp = $infos_annonce['cp'];
+    $membre = $infos_annonce['membre_id'];
+    $categorie = $infos_annonce['categorie_id'];
+  
+        // // On vérifie si l'id_membre existe et n'est pas vide : si c'est le cas, on est en modification
+        // if(isset($_GET['action']) && $_GET['action'] == 'modifier' && !empty($_GET['id_annonce']) ) {
 
+            
+        //     // On lance lA MODIFICATION
+        // $id_annonce_recup = $_GET['id_annonce'];
+         
+        // $verif_id_annonce = $pdo->query("SELECT * FROM annonce WHERE id_annonce = $id_annonce ");
+    
+
+        //     // Récuperation des infos pour les afficher dans le formulaire pour modification
+        // $modif_annonce = $verif_id_annonce->fetch(PDO::FETCH_ASSOC);
+        // $id_annonce = $modif_annonce['id_annonce'];
+        // $titre = $modif_annonce['titre'];
+        // $description_courte = $modif_annonce['description_courte'];
+        // $description_longue = $modif_annonce['description_longue'];
+        // $prix = $modif_annonce['prix'];
+        // $categorie = $modif_annonce['categorie_id'];
+        // $photo1 = $modif_annonce['photo'];
+        // $pays = $modif_annonce['pays'];
+        // $ville = $modif_annonce['ville'];
+        // $adresse = $modif_annonce['adresse'];
+        // $cp =$modif_annonce['cp'];
+      
+
+        // Il ne faut pas vérifier si la référence  existe dans le cadre d'une modif, donc on rajoute un controle sur id_membre qui doit être vide. Car en cas d'insert, l'id_membre sera vide, en revanche sur une  modif il n'est pas vide.
+        if( $verif_id_membre->rowCount()>= 1) {
+          
+            $enregistrement = $pdo->prepare("UPDATE annonce SET  titre = :titre, description_courte = :description_courte, description_longue = :description_longue, prix = :prix, photo = :photo, ville = :ville, adresse = :adresse, cp = :cp, membre_id = :membre_id, photo_id= :photo_id, categorie_id= :categorie_id WHERE id_annonce = :id_annonce");
+        
+            $enregistrement_annonce->bindParam(':titre', $titre, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':description_courte', $description_courte, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':description_longue', $description_longue, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':prix', $prix, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':photo', $photo1, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':pays', $pays, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':ville', $ville, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':cp', $cp, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':photo_id', $id_photo, PDO::PARAM_STR);
+            $enregistrement_annonce->bindParam(':categorie_id', $_POST['categorie'] , PDO::PARAM_STR);
+            $enregistrement_annonce->execute();
+
+            echo "<script type='text/javascript'>alert('Votre annonce a bien été modifiée. Vous allez être redirigé Vers la page d'accueil');document.location.href = 'index.php';
+            </script>";
+                
+        }
+    }
+        //    FIN DE MODIFICATION  *************************************
+        // ____________________________________________________________
+
+/// ______________________________________________________________________
+// ENGEGISTREMENT D'UNE NOUVELLE ANNONCE
 //*******************************************
 // CHECKING DES ISSET DU FORMULAIRE
 if(isset($_POST['titre']) &&
@@ -202,38 +279,7 @@ if(isset($_POST['titre']) &&
 
         }
 } 
-    // ------------------ POUR MODIFICATION ------------------------
-        // On vérifie si l'id_membre existe et n'est pas vide : si c'est le cas, on est en modification
-        if( isset($_GET['action']) && $_GET['action'] == 'modifier' && !empty($_GET['id_annonce']) ) {
-            $id_annonce = trim($_POST['id_annonce']);
-            
-            // Si tout est OK on lance lA MODIFICATION
     
-         
-        $verif_id_annonce = $pdo->prepare("SELECT * FROM annonce WHERE id_annonce = :id_annonce");
-        $verif_id_annonce->bindParam(':id_annonce', $id_annonce, PDO::PARAM_STR);
-        $verif_id_annonce->execute();
-
-        // Il ne faut pas vérifier si la référence  existe dans le cadre d'une modif, donc on rajoute un controle sur id_membre qui doit être vide. Car en cas d'insert, l'id_membre sera vide, en revanche sur une  modif il n'est pas vide.
-        if( $verif_id_membre->rowCount()>= 1) {
-          
-            $enregistrement = $pdo->prepare("UPDATE annonce SET  titre = :titre, description_courte = :description_courte, description_longue = :description_longue, prix = :prix, photo = :photo, ville = :ville, adresse = :adresse, cp = :cp, membre_id = :membre_id, photo_id= :photo_id, categorie_id= :categorie_id WHERE id_annonce = :id_annonce");
-        
-            $enregistrement_annonce->bindParam(':titre', $titre, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':description_courte', $description_courte, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':description_longue', $description_longue, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':prix', $prix, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':photo', $photo1, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':pays', $pays, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':ville', $ville, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':adresse', $adresse, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':cp', $cp, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':photo_id', $id_photo, PDO::PARAM_STR);
-            $enregistrement_annonce->bindParam(':categorie_id', $_POST['categorie'] , PDO::PARAM_STR);
-            $enregistrement_annonce->execute();
-
-        }}
 
 
 //-------------SUPPRESSION ANNONCE------------

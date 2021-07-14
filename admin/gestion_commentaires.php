@@ -42,6 +42,7 @@ include '../inc/nav.inc.php';
                             <th>Commentaire</th>
                             <th>Membre commenté</th>
                             <th>Date d'enregistrement</th>
+                            <th>Réponse du membre</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -56,6 +57,7 @@ include '../inc/nav.inc.php';
                                 <td>'.$commentaire['commentaire'].'</td>
                                 <td>'.$commentaire['membre_id_2'].'</td>
                                 <td>'.$commentaire['date_enregistrement'].'</td>
+                                <td>'.$commentaire['reponse'].'</td>
                                 <td><a href="?action=supprimer&id_commentaire=' . $commentaire['id_commentaire'] . '" class="btn btn-danger" onclick="return (confirm(\'êtes vous sûr ?\'))"><i class="far fa-trash-alt"></i></a></td>
                                 </tr>';
 

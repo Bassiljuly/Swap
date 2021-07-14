@@ -49,12 +49,16 @@ $tel ='';
   $info_commentaires->execute();
 //requete d'enregistrement de la réponse 
 
+
       
   if(isset($_POST['reponse'])){
       $enregistrement_reponse = $pdo->prepare("UPDATE commentaire SET reponse = :reponse WHERE id_commentaire = :id_commentaire");
       $enregistrement_reponse->bindParam(':reponse', $_POST['reponse'], PDO::PARAM_STR);
       $enregistrement_reponse->bindParam(':id_commentaire', $_POST['id_commentaire'], PDO::PARAM_STR);
       $enregistrement_reponse->execute();
+
+      echo "<script type='text/javascript'>alert('Votre commentaire a bien été envoyé au propriétaire de l'annonce. ');document.location.href = 'profil.php';
+      </script>";
   }    
 
 // Si tous les champs sont remplis
@@ -81,7 +85,7 @@ if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && 
 
         }
 
-          // POUR MODIFICATION
+          // POUR MODIFICATION *********************************************************************
         // On vérifie si l'id_membre existe et n'est pas vide : si c'est le cas, on est en modification
         if( !empty($_POST['id_membre']) ) {
             $id_membre = trim($_POST['id_membre']);
@@ -241,7 +245,7 @@ include 'inc/nav.inc.php';
                 </div>
 
                 <div class="col-12 mt-5   rounded p-3">
-                    <table class="able bg-light table-bordered border-grayS text-center rounded">
+                    <table class="table bg-light table-bordered border-grayS text-center rounded">
                     <thead class="seaGreen bg-light">
                         <tr>
                         
@@ -288,30 +292,7 @@ include 'inc/nav.inc.php';
                     </tbody>
                     </table>
                 </div>
-                    <!-- <div class="col-12 mt-5 rounded p-3">
-                    <table class="table bg-light table-bordered border-grayS text-center rounded">
-                    <thead class="seaGreen bg-light">
-                        <tr>
-                        
-                            <th>titre annonce</th>
-                            <th>commentaire</th>
-                            <th>date </th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                    //      while(($titreannonce = $info_annonce->fetch(PDO::FETCH_ASSOC)) && ($commentaire = $liste_commentaires->fetch(PDO::FETCH_ASSOC))){
-                    //              echo '<tr><td>'.$titreannonce['titre'] .'</td><td>'.$commentaire['commentaire'] .'</td>
-                    //              <td>'.$commentaire['date_post'].'</td></tr>' ;
-                              
-                    //  }
-      
-
-                    ?>  
-                    </tbody>
-                    </table>
-                </div> -->
+                   
                 <?php   }      ?>
 
                 <div>Pour modifier votre annonce rendez-vous sur la page <a href="depot_annonce.php">Ajout annonces</a></div>

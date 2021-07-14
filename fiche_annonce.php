@@ -35,20 +35,23 @@ if (isset($_GET['id_annonce'])) {
     header('location:index.php');
 }
 
-
+//*******************************************************************
 // Si un commentaire est posté via le formulaire en lightbox
 if(isset($_POST['comm'])) {
 $commentaire = $_POST['comm'];
             
 // ON COMMENCE L'ENREGISTREMENT
-$enregistre_comm = $pdo->prepare("INSERT INTO commentaire (membre_id, annonce_id, commentaire,date_enregistrement) VALUES (:membre_id, :annonce_id, :commentaire, NOW())");
-$enregistre_comm->bindParam(':membre_id', $membre_info['id_membre'], PDO::PARAM_STR);
+
+$enregistre_comm = $pdo->prepare("INSERT INTO commentaire (membre_id, annonce_id, commentaire, date_enregistrement, membre_id_2) VALUES (:membre_id, :annonce_id, :commentaire, NOW(), :membre_id_2)");
+$enregistre_comm->bindParam(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
+$enregistre_comm->bindParam(':membre_id_2',$membre_info['id_membre'], PDO::PARAM_STR);
 $enregistre_comm->bindParam(':annonce_id', $id_annonce, PDO::PARAM_STR);
 $enregistre_comm->bindParam(':commentaire', $commentaire, PDO::PARAM_STR);
 $enregistre_comm->execute();
 
+
 // Lors de l'envoi du formulaire  on envoi sur la page d'accueil
-header('location:index.php');
+//header('location:index.php');
 }
 
 // Si un avis et une note sont postés via le formulaire en lightbox

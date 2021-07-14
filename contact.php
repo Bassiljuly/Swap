@@ -12,7 +12,7 @@ include 'inc/nav.inc.php';
 <main class="container">
     <div class="bg-light p-5 rounded text-center shadow p-3 mb-5 bg-body rounded">
         <h1 class="grayS"><i class="fas fa-bahai seaGreen"></i> Contact <i class="fas fa-bahai seaGreen"></i></h1>
-        <p class="lead seaGreen ">Bienvenue sur notre site.
+        <p class="lead seaGreen ">Envoyez nous un message.
             <hr><?php echo $msg; ?></p>
     </div>
 
