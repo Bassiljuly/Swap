@@ -74,6 +74,7 @@ if(isset($_POST['notedonnee']) && isset($_POST['avisdonne'])) {
    // header('location:index.php');
     }
 
+    
 
 
 include 'inc/header.inc.php';
@@ -110,14 +111,14 @@ include 'inc/nav.inc.php';
                                     <p class="fw-bolder">Appeler le : <?php echo $membre_info['telephone']; ?></p>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="message-text" class="col-form-label">Message :</label>
-                                    <textarea class="form-control" id="message-text"></textarea>
+                                    <label for="message_text" class="col-form-label">Message :</label>
+                                    <textarea class="form-control" id="message_text" name="message_text"></textarea>
                                 </div>
+                                <button type="submit" class="btn bg-seaGreen">Envoyer message</button>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                            <button type="button" class="btn bg-seaGreen">Envoyer message</button>
                         </div>
                     </div>
                 </div>
@@ -204,17 +205,11 @@ include 'inc/nav.inc.php';
         <div class="col-12">
           
             <!-- GOOGLE MAP -->
-                    <?php 
-                    echo '<iframe
-                    width="600"
-                    height="450"
-                    style="border:0"
-                    loading="lazy"
-                    allowfullscreen
-                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDLaE0tVOSsYqM1iG0Y6bmPSwmcZ7haGD8&q='.$infos['cp'].','.$infos['ville'].'">
-                  </iframe>'  
-                    ?>
-
+          <!-- Localisation l'adresse de l'annonceur  -->
+            <div class=" p-5 form-group row">
+                <iframe src="https://maps.google.it/maps?q=<?php echo $infos['adresse'] . $infos['cp'] . $infos['ville']; ?>&output=embed" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
+                    </div>
+            
         </div>
     </div>
     <!-- LightBox avis et commentaire si l'utilisateur est connecté-->

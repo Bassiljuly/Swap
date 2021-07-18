@@ -35,7 +35,7 @@ $tel ='';
     }
 // Recuperation des commentaires ---------------------------
   // Recuperation des titre des annonces commentees
-  $info_annonce = $pdo->prepare("SELECT * FROM commentaire AS c, annonce AS a, membre AS M WHERE c.annonce_id = a.id_annonce AND m.id_membre = :membre_id ORDER BY c.date_enregistrement DESC" ) ;
+  $info_annonce = $pdo->prepare("SELECT * FROM commentaire AS c, annonce AS a, membre AS m WHERE c.annonce_id = a.id_annonce AND m.id_membre = :membre_id ORDER BY c.date_enregistrement DESC" ) ;
   $info_annonce->bindParam(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
 
   $info_annonce->execute();
@@ -90,7 +90,8 @@ if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && 
         if( !empty($_POST['id_membre']) ) {
             $id_membre = trim($_POST['id_membre']);
         } else  {
-            $msg .= '<div class="alert alert-warning" role="alert"> Attention, Le format du mail est invalide.</div>';
+            $erreur = true;
+            $msg .= '<div class="alert alert-warning" role="alert"> Attention, Pas d\'id donc pas d\'enregistrement.</div>';
         }
 //---------------------------
          // Si tout est OK on lance lA MODIFICATION

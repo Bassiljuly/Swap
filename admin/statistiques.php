@@ -10,10 +10,11 @@ if (user_is_admin() == false) {
 
 // --------- RECUPERATION DES MEMBRES ET DE LA MOYENNE DE LEUR NOTE------------
 
-$liste_membres = $pdo->query('SELECT FLOOR(AVG(note)) as "note_moyenne", pseudo FROM note, membre  WHERE id_membre = membre_id2 GROUP BY membre_id2 ORDER BY AVG(note_moyenne) DESC LIMIT 5');
+//$liste_membres = $pdo->query('SELECT FLOOR(AVG(note)) as "note_moyenne", pseudo FROM note, membre  WHERE id_membre = membre_id2 GROUP BY membre_id2 ORDER BY AVG(note_moyenne) DESC LIMIT 5');
+$liste_membre = $pdo->query("SELECT AVG(note) AS 'moyenne', pseudo, COUNT(id_note) AS nb FROM membre, note WHERE membre_id1 = id_membre GROUP BY pseudo ORDER BY moyenne DESC LIMIT 5");
 
 
-//--------- RECUPERATION DU NOMBRE D'AVIS
+//--------- RECUPERATION DU NOMBRE D'AVIS POUR UN MEME MEMBRE
 $nb_avis = $pdo->query("SELECT COUNT(id_note) AS 'nb_note', FLOOR(AVG(note)) AS 'note_m' FROM note GROUP BY membre_id2 ORDER BY note_m DESC LIMIT 5");
 
 
@@ -49,25 +50,30 @@ include '../inc/nav.inc.php';
                 <div class="col-12">
                     <ul>
                         <?php
-                         
-                           // On crée un compteur pour le lister mes membres das l'ordre
+                            // while ($membre = $liste_membre->fetch(PDO::FETCH_ASSOC)) {
+                            //     echo '<div class="mt-5">';
+                            //     echo '<ul><li>' . $membre['prenom'] . ' ' . $membre['nom'] . ' (' . $membre['pseudo'] . ')    <span class="px-3 py-1 border rounded-pill alert-danger" > ' . round($membre['moyenne'], 2) . ' étoiles basé sur ' . $membre['nb'] . ' avis <span></li></ul>';
+                            //     echo ' </div>';
+                            // }
+                           // On crée un compteur pour le lister les membres dans l'ordre
                            $counter = 0;
    
-                           while (($meilleurs_membres = $liste_membres->fetch(PDO::FETCH_ASSOC)) && ($nb_avis_membre = $nb_avis->fetch(PDO::FETCH_ASSOC))) {
+                           while($meilleurs_membres = $liste_membre->fetch(PDO::FETCH_ASSOC))  {
    
                                //On ajoute +1 au compteur a chaque tour
                                $counter++;
+                               echo '<li class="p-2">' . $counter . ' - <span class="text-white ps-3"> '. $meilleurs_membres['pseudo']   .'</span> <span class="bg-light p-1 ms-3 border border-rounded">' . round($meilleurs_membres['moyenne'], 2) . ' étoiles sur ' . $meilleurs_membres['nb'] . ' avis</span></li>';
                                // On recupère les infos souhaitées
-                               foreach ($meilleurs_membres as $indice => $valeur) {
+                            //    foreach ($meilleurs_membres as $indice => $valeur) {
+                                
+                                //    if ($indice == 'pseudo') {
+                                //        echo '<li class="p-2">' . $counter . ' - <span class="text-white ps-3"> ' . $valeur . '</span> ';
+                                //    } elseif ($indice == 'note_moyenne') {
    
-                                   if ($indice == 'pseudo') {
-                                       echo '<li class="p-2">' . $counter . ' - <span class="text-white ps-3"> ' . $valeur . '</span> ';
-                                   } elseif ($indice == 'note_moyenne') {
    
-   
-                                       echo '<span class="bg-light p-1 ms-3 border border-rounded">' . $valeur . ' étoiles sur ' . $nb_avis_membre['nb_note'] . ' avis</span></li>';
-                                   }
-                               }
+                                //        echo '<span class="bg-light p-1 ms-3 border border-rounded">' . $valeur . ' étoiles sur ' . $nb_avis_membre['nb_note'] . ' avis</span></li>';
+                                //    }
+                            //    }
                            };
    
                     

@@ -59,10 +59,12 @@
 
                     </ul>
                  <!-- Formulaire de recherche -->
-                    <form class="d-flex" method="GET">
-                    <input class="form-control me-2" list="datalistOptions" id="myDataList" placeholder="Rechercher">
+               
+                    <form class="d-flex" method="GET" action="<?php echo URL; ?>index.php">
+                    <input class="form-control me-2" list="datalistOptions" id="myDataList" name="recherche" placeholder="Rechercher">
                     <datalist id="datalistOptions">
                     </datalist>
+                    <button class="btn btn-outline-light text-white w-80">rechercher</button>
                     </form>
                 </div>
             </div>

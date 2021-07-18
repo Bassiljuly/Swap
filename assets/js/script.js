@@ -1,5 +1,7 @@
 // JQUERY CODE ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $(document).ready(function(){
+
+    // autocompletion : à l'ajout du code postal lors de l'ajout d'une annonce, la ville est autocomplétée 
     const apiUrl = 'https://geo.api.gouv.fr/communes?codePostal=';
     const format = '&format=json';
 
@@ -37,39 +39,29 @@ $(document).ready(function(){
     });
 
 
+    $('#search').keyup(function(){
+        $('#result-search').html('');
+        let utilisateur = $(this).val();
 
-
-    // COde barre de recherche
-    // $("#myDataList").keyup(function () {
-
-    //     let currentValue = $(this).val();
-
-    //     if(currentValue.length == 0) {
-    //         $("#datalistOptions").html("");
-    //         return false;
-    //     }
-
-    //     $.ajax({
-    //         url: "suggestions.php",
-    //         type: "GET",
-    //         dataType: "json",
-    //         data: { myInputValue: currentValue }
-    //     }).done(function (data) {
-
-    //         let listOptions = "";
-    //         $.each(data, function (index, value) {
-    //             listOptions += "<option> " + value.title + " </option>";
-    //         });
-
-    //         $("#datalistOptions").html(listOptions);
-    //     });
-
-    // });
-
+        if(utilisateur != ""){
+            $.ajax({
+                type: 'GET',
+                url: 'recherche_annonce.php',
+                data: 'user=' + encodeURIComponent(utilisateur),
+                success: function(data){
+                    if(data != ""){
+                        $('#result-search').append(data);
+                    }else{
+                        document.getElementById('result-search').innerHTML = '<div class="col-12 alert alert-danger">Aucun produit ne correspond à votre recherche !</div>';
+                    }
+                }
+            });
+        }   
+    });
 });
 //END OF JQUERY CODE //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Code JS pour la lightbox 
+// Code JS pour la lightbox  page profil_annonce.php
 
 let exampleModal = document.getElementById('exampleModal')
 exampleModal.addEventListener('show.bs.modal', function (event) {

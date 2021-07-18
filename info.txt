@@ -1,4 +1,4 @@
-INFORMATION DE CONNEXION :
+INFORMATIONS DE CONNEXION :
 
 - ADMINISTRATEUR :
     statut : 2
@@ -10,9 +10,15 @@ INFORMATION DE CONNEXION :
     pseudo : swapeur
     mdp : swapeur
 
-zip avec sources du site :
-export BDD
-URL du site
-info de connexion
+- Autre compte membre : 
+    statut : 1
+    pseudo : sergio
+    mdp :  sergio
 
-    autre compte : sergio sergio
+
+
+
+URL du site : https://swap.juliebassil.fr/
+
+
+
