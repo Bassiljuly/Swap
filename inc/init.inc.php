@@ -2,8 +2,8 @@
 
 // CONNEXION BDD
 $host = 'mysql:host=cl1-sql11;dbname=grs33582'; 
-$login = 'grs33582'; // login
-$password = 'cxLqhyNAl2yM'; // mdp
+$login = ''; // login
+$password = ''; // mdp
 $options = array(
     PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING, 
     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8' 
