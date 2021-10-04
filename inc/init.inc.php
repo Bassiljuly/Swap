@@ -1,7 +1,7 @@
 <?php
 
 // CONNEXION BDD
-$host = 'mysql:host=cl1-sql11;dbname=grs33582'; 
+$host = 'mysql:host=;dbname='; 
 $login = ''; // login
 $password = ''; // mdp
 $options = array(
